@@ -661,17 +661,17 @@ remote-shell-program or efs-remote-shell-file-name at load time."
   :type 'string
   :group 'compilation)
 (cl-eval-when 'load
-	   (cond
-	    ((not (string= mode-compile-remote-execute-command "rsh"))
-	     ;; user changed default
-	     nil)
-	    ;; Try to not multiply definitions of the same stuff
-	    ;; in too many emacs lisp packages ...
-	    ((and (boundp 'remote-shell-program) remote-shell-program)
-	     (setq mode-compile-remote-execute-command remote-shell-program))
-	    ((and (boundp 'efs-remote-shell-file-name) efs-remote-shell-file-name)
-	     (setq mode-compile-remote-execute-command efs-remote-shell-file-name))
-	    ))
+  (cond
+   ((not (string= mode-compile-remote-execute-command "rsh"))
+    ;; user changed default
+    nil)
+   ;; Try to not multiply definitions of the same stuff
+   ;; in too many emacs lisp packages ...
+   ((and (boundp 'remote-shell-program) remote-shell-program)
+    (setq mode-compile-remote-execute-command remote-shell-program))
+   ((and (boundp 'efs-remote-shell-file-name) efs-remote-shell-file-name)
+    (setq mode-compile-remote-execute-command efs-remote-shell-file-name))
+   ))
 
 (defcustom mode-compile-remote-execute-set-host-arg ""
   "Argument To set the remote host name to the
@@ -1543,8 +1543,8 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
         (function
          (lambda (hooklist)
            (mapcar #'(lambda (x)
-                      ;; report an error if x not a function
-                      (funcall x))
+                       ;; report an error if x not a function
+                       (funcall x))
                    hooklist)))))
 
 (defsubst mc--read-string (prompt &optional initial-contents)
@@ -1557,11 +1557,11 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
 (defmacro mc--eval (sym &optional arg)
   ;; Evaluate symbol
   `(cond
-      ((and (symbolp ,sym)
-            (fboundp ,sym))
-       (funcall ,sym ,arg))
-      (t
-       (eval ,sym))))
+    ((and (symbolp ,sym)
+          (fboundp ,sym))
+     (funcall ,sym ,arg))
+    (t
+     (eval ,sym))))
 
 (defmacro mc--common-completion (alist)
   ;; Return the greatest common string for all
@@ -1879,18 +1879,18 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
 (defmacro mc--cleanup-makefile-list (makefile-list)
   ;; Remove unusable and/or backups makefiles from list
   `(let ((newlist))
-       (mapcar
-        #'(lambda (x)
-           (if (and (mc--makefile-test-p x)
-                    (or (not mode-compile-ignore-makefile-backups)
-                        (not (string-match
-                              mode-compile-makefile-backups-regexp
-                              x))))
-               (setq newlist (cons x newlist))
-             (mc--msg "Removing makefile \"%s\" from completion list"
-                      x)))
-        ,makefile-list)
-       newlist))
+     (mapcar
+      #'(lambda (x)
+          (if (and (mc--makefile-test-p x)
+                   (or (not mode-compile-ignore-makefile-backups)
+                       (not (string-match
+                             mode-compile-makefile-backups-regexp
+                             x))))
+              (setq newlist (cons x newlist))
+            (mc--msg "Removing makefile \"%s\" from completion list"
+                     x)))
+      ,makefile-list)
+     newlist))
 
 (defun mc--makefile-to-use (&optional directory)
   ;; Find the makefile to use in the current directory
@@ -2003,10 +2003,10 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
               (error "Compilation abort: In mc--shell-compile errors-regexp-alist not a list."))
           ;; Add new regexp alist to compilation-error-regexp-alist
           (mapcar #'(lambda(x)
-                     (if (mc--member x compilation-error-regexp-alist) nil
-                       (setq compilation-error-regexp-alist
-                             (append (list x)
-                                     compilation-error-regexp-alist))))
+                      (if (mc--member x compilation-error-regexp-alist) nil
+			(setq compilation-error-regexp-alist
+                              (append (list x)
+                                      compilation-error-regexp-alist))))
                   errors-regexp-alist)))
     ;; Run compile with run-cmd
     (mc--compile run-cmd)))
@@ -2014,14 +2014,14 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
 (defmacro mc--assq-get-fcomp (asq)
   ;; Return compile-function associated to ASQ
   `(let* ((mode (cdr ,asq))
-            (massq (assq mode mode-compile-modes-alist)))
-       (if massq (car-safe (cdr massq)))))
+          (massq (assq mode mode-compile-modes-alist)))
+     (if massq (car-safe (cdr massq)))))
 
 (defmacro mc--assq-get-fkill (asq)
   ;; Return kill-compile-function associated to ASQ
   `(let* ((mode (cdr ,asq))
-            (massq (assq mode mode-compile-modes-alist)))
-       (if massq (car-safe (cdr-safe (cdr massq))))))
+          (massq (assq mode mode-compile-modes-alist)))
+     (if massq (car-safe (cdr-safe (cdr massq))))))
 
 (defun mc--lookin-for-shell ()
   ;; Look into current-buffer to see if it is a shell script
