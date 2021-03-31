@@ -292,7 +292,7 @@
     (tcl-mode              . (tcl-compile       kill-compilation)) ; JWH
     (python-mode           . (python-compile    kill-compilation)) ; BM
     (ruby-mode             . (ruby-compile      kill-compilation)) ; CLGC
-    ;(message-mode          . (message-compile   kill-compilation))
+					;(message-mode          . (message-compile   kill-compilation))
     (fundamental-mode      . (guess-compile     nil)) ; bound dynamically
     (text-mode             . (guess-compile     nil)) ; itou
     (indented-text-mode    . (guess-compile     nil)) ; itou
@@ -354,14 +354,14 @@ To add a new filename regexp do the following:
                mode-compile-modes-alist))"
   :type '(repeat
           (cons :tag "Association: filename/mode"
-           (choice :tag "Filename regexp match"
-            (regexp :tag "Regexp as a string")
-            (symbol :tag "Variable containing the regexp")
-            (sexp :tag "Form wich evaluate to a string"))
-           ;; I need to bind dynamicaly this with const, ideas??
-           ;;`(choice
-           ;; ,@(mapcar (lambda (x) `(const ,(car x))) mode-compile-modes-alist))))
-           (function :tag "Mode to use -- should be a valid assoq in mode-compile-modes-alist --")))
+		(choice :tag "Filename regexp match"
+			(regexp :tag "Regexp as a string")
+			(symbol :tag "Variable containing the regexp")
+			(sexp :tag "Form wich evaluate to a string"))
+		;; I need to bind dynamicaly this with const, ideas??
+		;;`(choice
+		;; ,@(mapcar (lambda (x) `(const ,(car x))) mode-compile-modes-alist))))
+		(function :tag "Mode to use -- should be a valid assoq in mode-compile-modes-alist --")))
   :group 'compilation)
 
 (defcustom mode-compile-shell-alist
@@ -387,11 +387,11 @@ To add a new shell do the following:
                mode-compile-modes-alist))"
   :type '(repeat
           (cons :tag "Association: shell name/mode"
-           (string :tag "Shell name")
-           ;; I need to bind dynamicaly this with const, ideas??
-           ;;`(choice
-           ;; ,@(mapcar (lambda (x) `(const ,(car x))) mode-compile-modes-alist))))
-           (function :tag "Mode to use -- should be a valid assoq in mode-compile-modes-alist --")))
+		(string :tag "Shell name")
+		;; I need to bind dynamicaly this with const, ideas??
+		;;`(choice
+		;; ,@(mapcar (lambda (x) `(const ,(car x))) mode-compile-modes-alist))))
+		(function :tag "Mode to use -- should be a valid assoq in mode-compile-modes-alist --")))
   :group 'compilation)
 
 ;;;###autoload
@@ -521,7 +521,7 @@ Emacs.MODE-COMPILE-OTHER-FRAME-NAME.resource_to_be_set: ..."
    (cons 'name   mode-compile-other-frame-name)
    (cons 'width  85)  ; columns
    (cons 'height 30)) ; lines
-   "Default parameters for mode-compile's other frame.")
+  "Default parameters for mode-compile's other frame.")
 
 (defvar mode-compile-frame-parameters-alist
   (purecopy mode-compile-default-frame-parameters)
@@ -661,17 +661,17 @@ remote-shell-program or efs-remote-shell-file-name at load time."
   :type 'string
   :group 'compilation)
 (eval-when 'load
-  (cond
-   ((not (string= mode-compile-remote-execute-command "rsh"))
-    ;; user changed default
-    nil)
-   ;; Try to not multiply definitions of the same stuff
-   ;; in too many emacs lisp packages ...
-   ((and (boundp 'remote-shell-program) remote-shell-program)
-    (setq mode-compile-remote-execute-command remote-shell-program))
-   ((and (boundp 'efs-remote-shell-file-name) efs-remote-shell-file-name)
-    (setq mode-compile-remote-execute-command efs-remote-shell-file-name))
-   ))
+	   (cond
+	    ((not (string= mode-compile-remote-execute-command "rsh"))
+	     ;; user changed default
+	     nil)
+	    ;; Try to not multiply definitions of the same stuff
+	    ;; in too many emacs lisp packages ...
+	    ((and (boundp 'remote-shell-program) remote-shell-program)
+	     (setq mode-compile-remote-execute-command remote-shell-program))
+	    ((and (boundp 'efs-remote-shell-file-name) efs-remote-shell-file-name)
+	     (setq mode-compile-remote-execute-command efs-remote-shell-file-name))
+	    ))
 
 (defcustom mode-compile-remote-execute-set-host-arg ""
   "Argument To set the remote host name to the
@@ -1479,16 +1479,16 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
                (win-attr (or mode-compile-frame-parameters-alist
                              mode-compile-default-frame-parameters))
                (frame   (cond ((fboundp 'mc--frame-live-p)
-                                (if (mc--frame-live-p mc--other-frame)
-                                    mc--other-frame
-                                  nil))
-                               (t
-                                (mc--msg "Don't know how to check frame existence.")
-                                nil))))
+                               (if (mc--frame-live-p mc--other-frame)
+                                   mc--other-frame
+                                 nil))
+                              (t
+                               (mc--msg "Don't know how to check frame existence.")
+                               nil))))
            (cond ((fboundp 'mc--make-frame)
                   (mc--select-frame (or frame
-                                         (setq mc--other-frame
-                                               (mc--make-frame win-attr))))
+                                        (setq mc--other-frame
+                                              (mc--make-frame win-attr))))
                   ;; I really don't understand why the 3 following
                   ;; are necessary (raise-frame must be enought?).
                   (mc--make-frame-visible mc--other-frame)
@@ -1596,7 +1596,7 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
       ;; Some emacses don't have locate-file some have...
       ;; Lucid have it in standard, some others (GNU) have it
       ;; (add-on pkg) but the syntax is not always consistent...
-;      (locate-file file exec-path nil 1)
+					;      (locate-file file exec-path nil 1)
       (locate-file file exec-path mode-compile-exe-file-ext 1)
     (let ((tmp-p-lst  exec-path)
           (found      nil)
@@ -1742,7 +1742,7 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
                mc--remote-username                           " "
                mode-compile-remote-execute-misc-args         " "
                mode-compile-remote-execute-set-command-arg   " "
-                )))
+               )))
     ;; Arg is: Ask to user then check
     (let ((rhost (completing-read
                   "Remote host to compile to: "
@@ -1755,11 +1755,11 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
       (or (string= rhost "")
           (mc--set-remote-cmd rhost)))))
 
-;(defmacro mc--makefile-test-p (makefile)
-;  (` (and (, makefile)
-;          (not (string-equal     (, makefile) ""))
-;          (not (file-directory-p (, makefile)))
-;          (file-readable-p       (, makefile)))))
+					;(defmacro mc--makefile-test-p (makefile)
+					;  (` (and (, makefile)
+					;          (not (string-equal     (, makefile) ""))
+					;          (not (file-directory-p (, makefile)))
+					;          (file-readable-p       (, makefile)))))
 (defun mc--makefile-test-p (makefile)
   (cond
    ((or (not makefile)
@@ -1961,14 +1961,14 @@ Please send bugs-fixes/contributions/comments to boubaker@cena.fr")
           (setq mc--compile-command
                 (concat (setq mode-compile-choosen-compiler
                               (mc--find-compiler)) " "
-                        (or (getenv mc--cflags-varenv)
-                            (mc--eval mc--comp-options))
-                        (if to-compile-fname
-                            (if mc--build-op-args
-				(mc--build-output-args to-compile-fname)
-			      (concat " " to-compile-fname)
-			      )
-                          " "))))
+                              (or (getenv mc--cflags-varenv)
+				  (mc--eval mc--comp-options))
+                              (if to-compile-fname
+				  (if mc--build-op-args
+				      (mc--build-output-args to-compile-fname)
+				    (concat " " to-compile-fname)
+				    )
+				" "))))
       (if (not mode-compile-never-edit-command-p)
           (setq mc--compile-command
                 (mc--read-string
@@ -2259,7 +2259,7 @@ The user is prompted for a selection of make rules to build."
                   (or (mc--eval mode-compile-make-options) "")
                   " -f " mkfile " "
                   (mc--choose-makefile-rule mkfile))))
-    (mc--compile mc--compile-command))
+  (mc--compile mc--compile-command))
 
 
 (defun dired-compile ()
