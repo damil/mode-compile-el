@@ -247,7 +247,7 @@
 
 ;; @ Requirements ;;;
 
-(require 'cl)
+(require 'cl-lib)
 (require 'compile)
 
 ;; @ Custom groups ;;;
