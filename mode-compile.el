@@ -5,7 +5,7 @@
 ;; Author: Heddy Boubaker <heddy.Boubaker@cena.fr>
 ;; Maintainer: wanted
 ;; Created: 1994
-;; Version: 2.29.1
+;; Version: 3.0.0
 ;; Keywords: compile, compilation, modes, languages
 
 ;; This file is not part of GNU Emacs.
@@ -1252,14 +1252,14 @@ See variable compilation-error-regexp-alist for more details.")
   "Ruby compilation options"
   :group 'compilation-script)
 
-(defcustom ruby-command "ruby" 
-  "Command to run ruby" 
-  :type 'string 
+(defcustom ruby-command "ruby"
+  "Command to run ruby"
+  :type 'string
   :group 'compile-ruby)
 
-(defcustom ruby-dbg-flags "-w" 
-  "Flags to give ruby for catching warnings" 
-  :type 'string 
+(defcustom ruby-dbg-flags "-w"
+  "Flags to give ruby for catching warnings"
+  :type 'string
   :group 'compile-ruby)
 
 (defvar ruby-compilation-error-regexp-alist
