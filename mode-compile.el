@@ -660,7 +660,7 @@ user-login-name will be used."
 remote-shell-program or efs-remote-shell-file-name at load time."
   :type 'string
   :group 'compilation)
-(eval-when 'load
+(cl-eval-when 'load
 	   (cond
 	    ((not (string= mode-compile-remote-execute-command "rsh"))
 	     ;; user changed default
