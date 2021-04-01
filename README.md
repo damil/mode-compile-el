@@ -12,4 +12,4 @@ testing had been done, and only with perl.
 * `cl` is deprecated - use `cl-lib` instead
 * `eval-when` is undefined - use `cl-eval-when` instead
 * `(lambda (x) ...)` quoted with `'` rather than with `#'` - replace `'(lambda` with `#'(lambda`
-* old-style backquotes detected - replace `(\` (foo (, bar))) with \`(foo ,bar)`
+* old-style backquotes detected - replace ```(` (foo (, bar)))``` with ``` `(foo ,bar)```
