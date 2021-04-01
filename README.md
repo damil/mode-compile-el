@@ -6,3 +6,10 @@ and modernised so as to be usable with emacs 27 and later.
 
 The primary reason for doing this was for use with perl. Only minimal
 testing had been done, and only with perl.
+
+## specific errors corrected
+
+* `cl` is deprecated - use `cl-lib` instaed
+* `eval-when` is undefined - use `cl-eval-when` instead
+* `(lambda (x) ...)` quoted with `'` rather than with `#'` - replace `'(lambda` with `#'(lambda`
+* old-style backquotes detected - replace `(\` (foo (, bar))) with \`(foo ,bar)`
