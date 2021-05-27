@@ -14,3 +14,12 @@ testing had been done, and only with perl.
 * `eval-when` is undefined - use `cl-eval-when` instead
 * `(lambda (x) ...)` quoted with `'` rather than with `#'` - replace `'(lambda` with `#'(lambda`
 * old-style backquotes detected - replace ```(` (foo (, bar)))``` with ``` `(foo ,bar)```
+
+## Changes
+
+3.01 20212705
+  - add myself as maintainer
+  - add this changelog
+
+3.00 20210401
+  - use "modern" emacs
