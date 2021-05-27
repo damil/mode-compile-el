@@ -3,7 +3,7 @@
 ;; Copyright (C) 1994-2006  Heddy Boubaker
 
 ;; Author: Heddy Boubaker <heddy.Boubaker@cena.fr>
-;; Maintainer: wanted
+;; Maintainer: Brian Greenfield <briang@cpan.org>
 ;; Created: 1994
 ;; Version: 3.0.0
 ;; Keywords: compile, compilation, modes, languages
