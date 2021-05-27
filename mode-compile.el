@@ -5,7 +5,7 @@
 ;; Author: Heddy Boubaker <heddy.Boubaker@cena.fr>
 ;; Maintainer: Brian Greenfield <briang@cpan.org>
 ;; Created: 1994
-;; Version: 3.0.0
+;; Version: 3.0.1
 ;; Keywords: compile, compilation, modes, languages
 
 ;; This file is not part of GNU Emacs.
