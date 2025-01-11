@@ -4,6 +4,7 @@
 
 ;; Author: Heddy Boubaker <heddy.Boubaker@cena.fr>
 ;; Maintainer: Brian Greenfield <briang@cpan.org>
+;; Raku support : Laurent Dami <dami@cpan.org>
 ;; Created: 1994
 ;; Version: 3.0.1
 ;; Keywords: compile, compilation, modes, languages
@@ -289,6 +290,7 @@
     (zsh-mode              . (zsh-compile       kill-compilation))
     (perl-mode             . (perl-compile      kill-compilation))
     (cperl-mode            . (perl-compile      kill-compilation))
+    (raku-mode             . (raku-compile      kill-compilation))
     (tcl-mode              . (tcl-compile       kill-compilation)) ; JWH
     (python-mode           . (python-compile    kill-compilation)) ; BM
     (ruby-mode             . (ruby-compile      kill-compilation)) ; CLGC
@@ -300,17 +302,17 @@
   "Assoc list of compile/kill functions for some known modes.
 
 Each element look like (MODE . (COMPILE-FUNCTION KILL-FUNCTION))
- `mode-compile' will call COMPILE-FUNCTION and `mode-compile-kill'
+ `mode-compile\\=' will call COMPILE-FUNCTION and `mode-compile-kill\\='
  KILL-FUNCTION if current major-mode is MODE.
 
-If you want to add or modify a COMPILE-FUNCTION and it's associated
-KILL-FUNCTION for MODE and don't want to hack `mode-compile' you could
+If you want to add or modify a COMPILE-FUNCTION and it\\='s associated
+KILL-FUNCTION for MODE and don\\='t want to hack `mode-compile\\=' you could
 do the following (it exists however a more subtle method for
 modifying, this is left as an exercice for the reader :-):
  (defun my-mode-compile() ...)
  (defun my-mode-compile-kill() ...)
  (setq mode-compile-modes-alist
-       (append '((my-mode . (my-mode-compile my-mode-compile-kill)))
+       (append \\='((my-mode . (my-mode-compile my-mode-compile-kill)))
                mode-compile-modes-alist))"
   :type '(repeat
           (cons :tag "Association: mode/compilation functions"
@@ -341,16 +343,16 @@ modifying, this is left as an exercice for the reader :-):
   "Assoc list of major-modes for some filenames regexp.
 
 Each element look like (REGEXP . MODE) This variable is really similar
-to `auto-mode-alist' in the fact that it associate a MODE to a REGEXP
+to `auto-mode-alist\\=' in the fact that it associate a MODE to a REGEXP
 matching a filename. The only differences is that you are not obliged
-to have the specified MODE available to use it (`guess-compile' use
+to have the specified MODE available to use it (`guess-compile\\=' use
 it), the MODE is only a pointer to an assoq in
-`mode-compile-modes-alist' to get the COMPILE-FUNCTION and the
+`mode-compile-modes-alist\\=' to get the COMPILE-FUNCTION and the
 KILL-FUNCTION. The REGEXP could be a form wich evaluate to a string.
 
 To add a new filename regexp do the following:
  (setq mode-compile-filename-regexp-alist
-       (append '((my-filename-regexp . some-mode-mode-compile-know)
+       (append \\='((my-filename-regexp . some-mode-mode-compile-know)
                mode-compile-modes-alist))"
   :type '(repeat
           (cons :tag "Association: filename/mode"
@@ -375,15 +377,15 @@ To add a new filename regexp do the following:
   "Assoc list of compile function for some known shells.
 
 Each element look like (SHELL . MODE) This variable look like
-`auto-mode-alist' in the fact that it associate a MODE to a name; A
+`auto-mode-alist\\=' in the fact that it associate a MODE to a name; A
 SHELL name here. The main difference is that you are not obliged to
-have the specified MODE available to use it (`guess-compile' use it),
-the MODE is only a pointer to an assoq in `mode-compile-modes-alist'
+have the specified MODE available to use it (`guess-compile\\=' use it),
+the MODE is only a pointer to an assoq in `mode-compile-modes-alist\\='
 to get the COMPILE-FUNCTION and the KILL-FUNCTION.
 
 To add a new shell do the following:
  (setq mode-compile-filename-shell-alist
-       (append '((my-shell-name . some-mode-mode-compile-know)
+       (append \\='((my-shell-name . some-mode-mode-compile-know)
                mode-compile-modes-alist))"
   :type '(repeat
           (cons :tag "Association: shell name/mode"
@@ -404,7 +406,7 @@ If you have GNU make installed with name \"gmake\" use it."
 
 (defcustom mode-compile-makefile-regexp
   "\\(^[Mm]akefile\\|.*\\.[mM][aA]?[kK][eE]?\\.?.*$\\)"
-  "Regexp matching 'could be' makefiles filenames."
+  "Regexp matching \\='could be\\=' makefiles filenames."
   :type 'regexp
   :group 'compilation)
 
@@ -422,10 +424,10 @@ If you have GNU make installed with name \"gmake\" use it."
 
 ;;;###autoload
 (defvar mode-compile-default-make-options "-k"
-  "Default options to give to `make'.")
+  "Default options to give to `make\\='.")
 ;;;###autoload
 (defcustom mode-compile-make-options (eval mode-compile-default-make-options)
-  "*Options to give to `make'.
+  "*Options to give to `make\\='.
 This could be any form evaluating to a string.
 
 Some people asked me a way to modify the make options everytime a
@@ -436,7 +438,7 @@ compilation command is launched, do that:
    (read-string \"Make options: \"
                 mode-compile-default-make-options))
  (setq mode-compile-make-options
-           'my-mode-compile-ask-make-options)"
+           \\='my-mode-compile-ask-make-options)"
   :type '(choice
           string
           (sexp :tag "Form evaluating to a string"))
@@ -448,12 +450,12 @@ compilation command is launched, do that:
 when selecting the make rule to build.
 
 Possible values are:
-'none    -- let mode-compile deciding for you.
-'all     -- try hard to show you the \"all\" rule.
-'default -- try hard to show you the \"default\" rule.
-'file    -- try to show you the name of the file which will be
+\\='none    -- let mode-compile deciding for you.
+\\='all     -- try hard to show you the \"all\" rule.
+\\='default -- try hard to show you the \"default\" rule.
+\\='file    -- try to show you the name of the file which will be
             result of compilation.
-The 'none action is taken as default is something fail."
+The \\='none action is taken as default is something fail."
   :type '(radio :tag "Symbol"
                 (const :tag "None - Let mode compile made the choice" :value none)
                 (const :tag "All - Show the \"all\" rule" :value all)
@@ -465,7 +467,7 @@ The 'none action is taken as default is something fail."
 (defcustom mode-compile-ignore-makerule-regexp nil
   "*Makefile rules which must be ignored when building completion list.
 
-For example if you want to remove all `files rules' set
+For example if you want to remove all `files rules\\=' set
 it to: \"\\\\.\\\\([aoc]\\\\|s[ao][.0-9]*\\\\)\". "
   :type '(choice (const :tag "none" :value nil)
                  (const :tag "The `all files' rule" :value "\\.\\([aoc]\\|s[ao][.0-9]*\\)")
@@ -504,12 +506,12 @@ before launching compilation command."
 
 A new Emacs FRAME is created and the compilation command is executed
 in this other frame.  To specify the frame parameters see also
-variable `mode-compile-frame-parameters-alist'."
+variable `mode-compile-frame-parameters-alist\\='."
   :type 'boolean
   :group 'compilation-frame)
 
 (defcustom mode-compile-other-frame-name "COMPILATION"
-  "Name of mode-compile's other frame.
+  "Name of mode-compile\\='s other frame.
 
 This name could be used in your .Xdefault or .Xresources file as:
 Emacs.MODE-COMPILE-OTHER-FRAME-NAME.resource_to_be_set: ..."
@@ -521,15 +523,15 @@ Emacs.MODE-COMPILE-OTHER-FRAME-NAME.resource_to_be_set: ..."
    (cons 'name   mode-compile-other-frame-name)
    (cons 'width  85)  ; columns
    (cons 'height 30)) ; lines
-  "Default parameters for mode-compile's other frame.")
+  "Default parameters for mode-compile\\='s other frame.")
 
 (defvar mode-compile-frame-parameters-alist
   (purecopy mode-compile-default-frame-parameters)
   "Parameters for the new Compilation Screen created
-if variable `mode-compile-other-frame-p' is non nil..
+if variable `mode-compile-other-frame-p\\=' is non nil..
 
-See also variable `mode-compile-default-frame-parameters' and
-`mode-compile-other-frame-name'.
+See also variable `mode-compile-default-frame-parameters\\=' and
+`mode-compile-other-frame-name\\='.
 
 For informations about Screen/Frame parameters see:
 - Info, Nodes: Lispref::Screen::Screen Parameters
@@ -540,28 +542,28 @@ For informations about Screen/Frame parameters see:
 ;;;###autoload
 (defcustom mode-compile-before-compile-hook nil
   "Hook to be run before compile command is executed
-when `mode-compile' is invoked."
+when `mode-compile\\=' is invoked."
   :type 'hook
   :group 'compilation)
 
 ;;;###autoload
 (defcustom mode-compile-after-compile-hook nil
   "Hook to be run after compile command is executed
-when `mode-compile' is invoked."
+when `mode-compile\\=' is invoked."
   :type 'hook
   :group 'compilation)
 
 ;;;###autoload
 (defcustom mode-compile-before-kill-hook nil
   "Hook to be run before killing compile command is executed
-when `mode-compile-kill' is invoked."
+when `mode-compile-kill\\=' is invoked."
   :type 'hook
   :group 'compilation)
 
 ;;;###autoload
 (defcustom mode-compile-after-kill-hook nil
   "Hook to be run after killing compile command is executed
-when `mode-compile-kill' is invoked."
+when `mode-compile-kill\\=' is invoked."
   :type 'hook
   :group 'compilation)
 
@@ -600,17 +602,17 @@ example:
     ((string= mode-compile-choosen-compiler \"cc\")
       \"cc options whatever they are...\")
     (t
-     (message \"Don't know this compiler: %s\" mode-compile-choosen-compiler)
+     (message \"Don\\='t know this compiler: %s\" mode-compile-choosen-compiler)
      (read-string
       (format \"Options for %s compiler: \" mode-compile-choosen-compiler)))))
 
-  (setq cc-default-compiler-options 'my-compiler-get-options)")
+  (setq cc-default-compiler-options \\='my-compiler-get-options)")
 
 ;; @@ User level ;;;
 
 ;;;###autoload
 (defcustom mode-compile-expert-p nil
-  "*Non nil means `mode-compile' will not speaks too much.
+  "*Non nil means `mode-compile\\=' will not speaks too much.
 
 See also variable variable mode-compile-reading-time."
   :type 'boolean
@@ -622,8 +624,8 @@ See also variable variable mode-compile-reading-time."
 
 In verbose mode mode-compile print too much messages that it is
 allmost impossible to read them. Just setting this delay leave you the
-time to read all the messages. If you don't want any delay set it to
-`0'.
+time to read all the messages. If you don\\='t want any delay set it to
+`0\\='.
 
 See also function sit-for."
   :type 'integer
@@ -654,7 +656,7 @@ user-login-name will be used."
 
 (defcustom mode-compile-remote-execute-command "rsh"
   "The shell command used to run a command remotely.
-\"rsh\" is the only choice I know but I'm far to know everything...
+\"rsh\" is the only choice I know but I\\='m far to know everything...
 
  This variable is set automaticaly with the value of
 remote-shell-program or efs-remote-shell-file-name at load time."
@@ -710,7 +712,7 @@ mode-compile-remote-execute-command."
   :group 'compilation-lang)
 
 (defcustom cc-compilers-list '( "gcc" "c89" "acc" "cc" )
-  "List of user's favourites C compilers in order of preferencies."
+  "List of user\\='s favourites C compilers in order of preferencies."
   :type '(repeat (string :tag "C Compiler name"))
   :group 'compile-c)
 
@@ -728,8 +730,8 @@ a function asking you interactively to choose the compiler.
 example:
  (defun my-choose-compiler()
    (read-string \"C compiler: \"))
- (setq cc-compilers-list '()
-       cc-default-compiler 'my-choose-compiler)"
+ (setq cc-compilers-list \\='()
+       cc-default-compiler \\='my-choose-compiler)"
   :type '(choice string function)
   :group 'compile-c)
 
@@ -757,14 +759,14 @@ example:
   "*Default options to give to the C compiler.
 
 This could be any form evaluating to a string.
-See `mode-compile-choosen-compiler' variable."
+See `mode-compile-choosen-compiler\\=' variable."
   :type '(choice
           string
           (sexp :tag "Form evaluating to a string"))
   :group 'compile-c)
 
 (defcustom cc-source-file-ext-regexp "\\.c"
-  "Regexp to find, from it's name, if a C file is compileable."
+  "Regexp to find, from it\\='s name, if a C file is compileable."
   :type 'string
   :group 'compile-c)
 
@@ -787,7 +789,7 @@ in c mode."
   :group 'compilation-lang)
 
 (defcustom java-compilers-list '( "javac" )
-  "List of user's favourites java compilers in order of preferencies."
+  "List of user\\='s favourites java compilers in order of preferencies."
   :type '(repeat (string :tag "Java Compiler name"))
   :group 'compile-java)
 
@@ -807,7 +809,7 @@ a function asking you interactively to choose the compiler.
 example:
  (defun my-choose-compiler()
    (read-string \"Java compiler: \"))
- (setq java-default-compiler 'my-choose-compiler)."
+ (setq java-default-compiler \\='my-choose-compiler)."
   :type '(choice string function)
   :group 'compile-java)
 
@@ -835,14 +837,14 @@ example:
   "*Default options to give to the Java compiler.
 
 This could be any form evaluating to a string.  See
-`mode-compile-choosen-compiler' variable."
+`mode-compile-choosen-compiler\\=' variable."
   :type '(choice
           string
           (sexp :tag "Form evaluating to a string"))
   :group 'compile-java)
 
 (defcustom java-source-file-ext-regexp "\\.java"
-  "Regexp to find, from it's name, if a Java file is compileable."
+  "Regexp to find, from it\\='s name, if a Java file is compileable."
   :type 'regexp
   :group 'compile-java)
 
@@ -865,7 +867,7 @@ in java mode."
   :group 'compilation-lang)
 
 (defcustom c++-compilers-list '( "g++" "gcc" "CC" )
-  "List of user's favourites C++ compilers in order of preferencies."
+  "List of user\\='s favourites C++ compilers in order of preferencies."
   :type '(repeat (string :tag "C++ Compiler name"))
   :group 'compile-c++)
 
@@ -884,7 +886,7 @@ a function asking you interactively to choose the compiler.
 example:
  (defun my-choose-compiler()
    (read-string \"C++ compiler: \"))
- (setq c++-default-compiler 'my-choose-compiler)"
+ (setq c++-default-compiler \\='my-choose-compiler)"
   :type '(choice string function)
   :group 'compile-c++)
 
@@ -918,7 +920,7 @@ This could be any form evaluating to a string.  See
   :group 'compile-c++)
 
 (defcustom c++-source-file-ext-regexp "\\.\\(cc\\|CC?\\|c\\+\\+?\\|cpp\\|cxx\\)"
-  "Regexp to find, from it's name, if a C++ file is compileable."
+  "Regexp to find, from it\\='s name, if a C++ file is compileable."
   :type 'regexp
   :group 'compile-c++)
 
@@ -942,7 +944,7 @@ in c++ mode."
 
 (defcustom ada-compilers-list
   '( "gcc" "gnat" "ada" )
-  "List of user's favourites Ada compilers in order of preferencies."
+  "List of user\\='s favourites Ada compilers in order of preferencies."
   :type '(repeat (string :tag "Ada Compiler name"))
   :group 'compile-ada)
 
@@ -962,7 +964,7 @@ a function asking you interactively to choose the compiler.
 example:
  (defun my-choose-compiler()
    (read-string \"Ada compiler: \"))
- (setq ada-default-compiler 'my-choose-compiler)"
+ (setq ada-default-compiler \\='my-choose-compiler)"
   :type '(choice string function)
   :group 'compile-ada)
 
@@ -990,14 +992,14 @@ example:
   "*Default options to give to the Ada compiler.
 
 This could be any form evaluating to a string.  See
-`mode-compile-choosen-compiler' variable."
+`mode-compile-choosen-compiler\\=' variable."
   :type '(choice
           string
           (sexp :tag "Form evaluating to a string"))
   :group 'compile-ada)
 
 (defcustom ada-source-file-ext-regexp "\\.\\(ad[abs]\\|a\\)"
-  "Regexp to find, from it's name, if an Ada file is compileable.
+  "Regexp to find, from it\\='s name, if an Ada file is compileable.
 
 This is useless in Ada because there do not exists uncompileable files."
   :type 'regexp
@@ -1022,7 +1024,7 @@ in ada mode."
   :group 'compilation-lang)
 
 (defcustom f77-compilers-list '( "f77" "fc" )
-  "List of user's favourite Fortran compilers in order of preferencies."
+  "List of user\\='s favourite Fortran compilers in order of preferencies."
   :type '(repeat (string :tag "C Compiler name"))
   :group 'compile-fortran)
 
@@ -1040,7 +1042,7 @@ a function asking you interactively to choose the compiler.
 example:
  (defun my-choose-compiler()
    (read-string \"Fortran compiler: \"))
- (setq f77-default-compiler 'my-choose-compiler)"
+ (setq f77-default-compiler \\='my-choose-compiler)"
   :type '(choice string function)
   :group 'compile-fortran)
 
@@ -1075,7 +1077,7 @@ This could be any form evaluating to a string.  See
   :group 'compile-fortran)
 
 (defcustom f77-source-file-ext-regexp "\\.\\([Ff]\\|for\\)"
-  "Regexp to find, from it's name, if a fortran file is compileable."
+  "Regexp to find, from it\\='s name, if a fortran file is compileable."
   :type 'regexp
   :group 'compile-fortran)
 
@@ -1247,6 +1249,34 @@ See variable compilation-error-regexp-alist for more details.")
 See variable compilation-error-regexp-alist for more details.")
 
 
+;; @@ raku-mode compile variables ;;;
+(defgroup compile-raku nil
+  "Raku compilation options"
+  :group 'compilation-script)
+
+(defcustom raku-command "raku"
+  "Command to run raku."
+  :type 'string
+  :group 'compile-raku)
+
+(defcustom raku-dbg-flags ""
+  "*Flags to give to raku for debugging a Raku script. -- TODO "
+  :type 'string
+  :group 'compile-raku)
+
+(defvar raku-compilation-error-regexp-alist
+  '(
+    ("\\bat \\([^ ]+\\)\\(?: ([^)]+)\\)? line \\([0-9]+\\)" 1 2)
+    )
+  "Alist that specifies how to match errors in raku output, of shape
+...at <filepath> <optional_package_name_in_parens> line <line_number>.
+Unfortunately this will also capture internal raku errors of shape 'SETTING::'src/core.c/...'
+for which no source can be displayed; so it is recommanded to also customize
+compilation-transform-file-match-alist with ("'SETTING:" nil)
+
+See variable compilation-error-regexp-alist for more details.")
+
+
 ;; @@ ruby-mode compile variables ;;;
 (defgroup compile-ruby nil
   "Ruby compilation options"
@@ -1283,7 +1313,7 @@ needing to be recompiled or not."
   :group 'compilation-elisp)
 (define-obsolete-variable-alias
   'mode-compile-byte-compile-dir-interactive-p
-  'emacs-lisp-byte-compile-dir-interactive-p)
+  'emacs-lisp-byte-compile-dir-interactive-p   "23.0")
 
 (defcustom emacs-lisp-sources-regexp
   (cond
@@ -2327,6 +2357,16 @@ See variables compilation-error-regexp-alist or perl-compilation-error-regexp-al
   (mc--shell-compile perl-command perl-dbg-flags perl-compilation-error-regexp-alist))
 
 
+(defun raku-compile ()
+  "Run Raku with `raku-dbg-flags' on current-buffer (`raku-mode').
+
+User is prompted for arguments to run his raku program with.
+If you want to step throught errors set the variable `raku-compilation-error-regexp-alist'
+to a value understandable by compile's `next-error'.
+See variables compilation-error-regexp-alist or raku-compilation-error-regexp-alist."
+  (mc--shell-compile raku-command raku-dbg-flags raku-compilation-error-regexp-alist))
+
+
 (defun tcl-compile ()
   ;; JWH
   "Run `tcl-command' with `tcl-dbg-flags' on current-buffer (`tcl-mode').
@@ -2487,6 +2527,7 @@ Currently know how to compile in:
  `zsh-mode'              -- function zsh-compile.
  `perl-mode'             -- function perl-compile.
  `cperl-mode'            -- function perl-compile.
+ `raku-mode'             -- function raku-compile.
  `tcl-mode'              -- function tcl-compile.
  `python-mode'           -- function python-compile.
  `ruby-mode'             -- function ruby-compile.
