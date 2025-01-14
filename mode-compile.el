@@ -1272,7 +1272,7 @@ See variable compilation-error-regexp-alist for more details.")
 ...at <filepath> <optional_package_name_in_parens> line <line_number>.
 Unfortunately this will also capture internal raku errors of shape 'SETTING::'src/core.c/...'
 for which no source can be displayed; so it is recommanded to also customize
-compilation-transform-file-match-alist with ("'SETTING:" nil)
+compilation-transform-file-match-alist with (\"'SETTING:\" nil)
 
 See variable compilation-error-regexp-alist for more details.")
 
